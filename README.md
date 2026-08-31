@@ -11,18 +11,28 @@ HTML/CSS/JS puro, single-page, sem framework e sem build step. Publicada via Git
 /
 ├── index.html                  # página inteira (13 seções)
 ├── assets/
-│   ├── css/style.css           # todo o CSS (inclui as @font-face)
-│   ├── js/script.js            # UTMs, CTAs, FAQ, sticky bar, eventos
+│   ├── css/
+│   │   ├── style.css           # PRODUÇÃO — minificado, é o que a página carrega
+│   │   └── style.src.css       # FONTE — edite este, nunca o minificado direto
+│   ├── js/
+│   │   ├── script.js           # PRODUÇÃO — minificado
+│   │   └── script.src.js       # FONTE
 │   ├── fonts/                  # Inter + Space Grotesk (variable, woff2)
 │   └── img/
-│       ├── logo-odr.png        # logotipo oficial (recorte do MP4 da marca)
+│       ├── logo-odr.png (+ -180/-311/-466/-622.webp/.avif)
 │       ├── logo-mark.png       # só o anel "O"
 │       ├── favicon-64.png
 │       ├── apple-touch-icon.png
-│       ├── og-image.png        # 1200×630 para compartilhamento
-│       └── imagem-*.png        # PLACEHOLDERS — substituir (ver mapa abaixo)
+│       ├── og-image.png        # 1200×630 para compartilhamento (sem srcset — é só p/ og:image)
+│       └── imagem-*.png (+ variantes -Wpx.webp/.avif — larguras variam por imagem)
 └── README.md
 ```
+
+Cada imagem de conteúdo (`logo-odr` e os 7 `imagem-*`) tem variantes AVIF e
+WebP em vários tamanhos, entregues via `<picture>` com `<source>` +
+fallback `.png`. O navegador escolhe o formato mais leve que suporta e o
+tamanho mais próximo do necessário — ver "Build" mais abaixo pra regerar
+essas variantes quando trocar um arquivo.
 
 ---
 
@@ -32,28 +42,36 @@ Os `<img>` já apontam para os caminhos abaixo. É só soltar os arquivos em
 `assets/img/` com esses nomes exatos — não precisa mexer no HTML.
 A numeração segue a do arquivo de copy original.
 
-| Arquivo | Seção | Conteúdo |
-|---|---|---|
-| `assets/img/imagem-1.png` | 7 — Autoridade | Foto profissional do Eduardo (quadrada, 1:1) |
-| `assets/img/imagem-3.png` | 4 — O Método | Dashboard Reset Hormonal (funil completo) |
-| `assets/img/imagem-4.png` | 2 — Consciência | Tabela de Ad Sets comparando CAC real |
-| `assets/img/imagem-5.png` | 6 — Diferencial | Relatório de IA (Escalar / Otimizar / Cortar / Observar) |
-| `assets/img/imagem-7.png` | 6 — Diferencial | Diagnóstico de funil com gargalo identificado |
-| `assets/img/imagem-8.png` | 5 — Módulos | Área de membros com os 7 módulos |
-| `assets/img/imagem-9.png` | 5 — Módulos | Print de aula real do Módulo 7 |
+| Arquivo | Seção | Conteúdo | Nativo |
+|---|---|---|---|
+| `assets/img/imagem-1.png` | 7 — Autoridade | Foto profissional do Eduardo (1:1) | 640×640 |
+| `assets/img/imagem-3.png` | 4 — O Método | Dashboard "Reset Hormonal" (funil completo) | 1568×717 |
+| `assets/img/imagem-4.png` | 2 — Consciência | Tabela de Ad Sets — CAC R$291 × R$680 no mesmo conjunto | 952×616 |
+| `assets/img/imagem-5.png` | 6 — Diferencial | Relatório de IA (Escalar / Otimizar / Cortar / Observar) | 914×730 |
+| `assets/img/imagem-7.png` | 6 — Diferencial | Diagnóstico de funil (nota de saúde + gargalo) | 1568×740 |
+| `assets/img/imagem-8.png` | 5 — Módulos | Área de membros com os 7 módulos | 1568×744 |
+| `assets/img/imagem-9.png` | 5 — Módulos | Aula real do Módulo 7 (M07A04) | 1568×748 |
 
-> ⚠️ **Os `imagem-*.png` que estão no repositório hoje são placeholders** (caixas
-> escuras escritas "IMAGEM 4", "IMAGEM 8"…). Estão ali só pra página nunca ficar
-> com buraco antes das imagens reais chegarem. Substitua cada um pelo arquivo
-> definitivo, mantendo exatamente o mesmo nome.
+Já são as imagens reais do cliente (chegaram via `_uploads/`, ver
+`_uploads/LEIA-ME.md` pra saber a origem de cada uma). Cada largura nativa
+acima é a maior variante gerada — o script de build nunca faz upscale.
 
 **Formato recomendado:** os prints de dashboard são recortados em `16/9`
 (`object-fit: cover`, alinhado ao topo) — exporte em 1600×900 ou maior para não
-perder nitidez. A foto da Seção 7 é recortada em `1:1`.
-Nenhuma imagem é distorcida; o corte é sempre proporcional.
+perder nitidez, com o dado principal (número, gráfico, tabela) centralizado
+no terço superior do print, já que é isso que aparece no crop mobile sem
+precisar de zoom. A foto da Seção 7 é recortada em `1:1`. Nenhuma imagem é
+distorcida; o corte é sempre proporcional (`object-fit:cover`).
 
-Se preferir `.jpg` ou `.webp`, troque a extensão nos `<img>` do `index.html`
-(são 7 ocorrências) — o CSS não depende do formato.
+**Depois de substituir um PNG, regere as variantes AVIF/WebP** com o script
+abaixo (precisa de `Pillow` com suporte a AVIF — `pip install pillow`):
+
+```bash
+python3 scripts/build-images.py   # regera todos os -Wpx.avif/.webp a partir dos PNG em assets/img/
+```
+
+Se algum print tiver dado sensível de cliente (nome de conta, faturamento,
+CNPJ), borre antes de gerar as variantes — a página é pública.
 
 ---
 
@@ -77,17 +95,18 @@ tendência. Os CTAs usam esse laranja, que cumpre o mesmo papel de urgência que
 o vermelho cumpriria, com o bônus de ser cor de marca de verdade. O texto do
 botão é escuro (`#0A1020`) porque branco sobre laranja não passa em contraste.
 
-O logotipo **não foi recriado**. `assets/img/logo-odr.png` é o logotipo
-oficial recortado do MP4 da marca (frame 28, o quadro em que ele está mais
-próximo da versão estática): nenhum pixel foi repintado — só o fundo do vídeo
-foi removido via canal alfa, para o logo assentar em qualquer fundo escuro.
-`logo-mark.png` é o mesmo recorte contendo só o anel "O", usado no favicon.
+O logotipo **não foi recriado**. `assets/img/logo-odr.png` é o arquivo
+oficial enviado pelo cliente (`ODR LOGO 7.png`, via `_uploads/`) — cores
+completas, fundo transparente, nenhum pixel alterado. Havia mais 4 variantes
+do mesmo logo (preto sólido, branco sólido, fundo cinza-chumbo, versão
+quadrada); essa foi a escolhida por ser a única com fundo transparente e
+paleta completa, combinando com o fundo escuro da página sem tarja.
 
-> ⚠️ **Substituir quando houver o arquivo original.** O recorte vem de um vídeo
-> comprimido: tem ~622 px de largura e carrega o reflexo animado que passa pelo
-> topo do anel. Serve bem no tamanho em que aparece na página, mas o certo é
-> trocar por um PNG com transparência ou, melhor ainda, um SVG. Basta
-> sobrescrever `assets/img/logo-odr.png` mantendo o nome.
+`logo-mark.png` (usado no favicon/apple-touch-icon) é uma exceção: continua
+vindo de um recorte do MP4 da marca, porque nenhum dos arquivos enviados
+isola só o anel "O" sem cortar a letra "D" vizinha — as composições enviadas
+são todas do lockup completo. Se algum dia sobrar um arquivo com só o mark
+(ícone quadrado, sem o "DR"), é só sobrescrever `logo-mark.png`.
 
 O fundo do hero repete dois elementos da peça oficial: a grade de dashboard
 (CSS puro) e as linhas de tendência azul e verde subindo (SVG inline).
@@ -191,24 +210,106 @@ servidor**, nunca aqui.
 
 ---
 
+## Mobile-first
+
+90%+ do tráfego é Meta Ads mobile, então toda decisão de layout parte do
+celular; telas maiores só *recebem mais respiro* via `min-width` media
+queries — nunca o contrário. Três coisas concretas:
+
+- **Hero cabe em 375×667 sem rolar.** Título, subtítulo e CTA (as 3 exigências)
+  ficam visíveis na primeira tela em qualquer aparelho a partir do iPhone
+  SE/8 — testado e medido, não estimado. Abaixo de 480px de largura o
+  título usa uma escala de fonte mais compacta (`clamp(1.55rem,7.4vw,2rem)`)
+  e o subtítulo cai pra 15px; a partir de 480px volta à escala fluida maior.
+  Os badges de prova (7 módulos, garantia) ficam logo abaixo do CTA e podem
+  pedir scroll — não fazem parte da exigência de "sem rolagem".
+- **Grid de espaçamento em 8pt.** Todo `padding`/`margin` do CSS é múltiplo
+  de 8px (tokens `--sp-1` a `--sp-14` em `:root`). As únicas exceções são
+  `margin:auto` de centralização (o valor computado depende da largura do
+  container, não é um token de espaçamento) — dá pra conferir rodando
+  `grep -oE "(padding|margin)[a-z-]*:[^;]+" assets/css/style.src.css` e
+  olhando os valores em `px`.
+- **Alvo de toque ≥44×44px.** Todo botão tem `min-height` explícito (52px
+  padrão, 56–64px nos CTAs grandes, 48px no CTA da barra fixa) — folga
+  sobre o mínimo recomendado pela WCAG 2.5.5 e pela iOS HIG.
+
+### Barra fixa de CTA
+
+Some / aparece via `IntersectionObserver` (sem scroll listener, sem jank):
+aparece assim que o hero (1º bloco) sai da tela — ou seja, a partir do 2º
+bloco em diante — e some de novo só quando a seção de oferta entra na
+viewport, pra não empilhar dois CTAs de checkout um em cima do outro.
+
+### Transição entre seções
+
+Cada `<section>` alterna fundo `--bg`/`--bg-alt` e ganha um fio de gradiente
+(azul → verde → laranja, as três cores do logotipo) no topo, com um glow
+suave logo abaixo — tudo via `::before`/`::after` absolutos, então é
+puramente decorativo e não desloca conteúdo (zero CLS). O efeito é notar
+"comecei um bloco novo" mesmo rolando rápido no mobile.
+
+---
+
 ## Performance
 
-- Zero dependências de JS. Sem Tailwind CDN, sem jQuery, sem bibliotecas.
+- **Zero dependências de JS.** Sem Tailwind CDN, sem jQuery, sem bibliotecas.
   (O Tailwind via CDN custaria ~100 KB de JS bloqueando a renderização — caro
   demais para tráfego 100% mobile de Meta Ads.)
-- CSS e JS em arquivo único cada (~19 KB e ~10 KB), servidos com gzip/brotli
-  pelo GitHub Pages — o que os deixa em ~5 KB e ~3 KB na rede. Ficaram legíveis
-  de propósito: minificar por cima do gzip economizaria menos de 1 KB e tornaria
-  a manutenção bem pior.
-- **Fontes self-hosted.** Inter e Space Grotesk (variable, woff2) servidas pelo
-  próprio domínio — zero conexão com `fonts.googleapis.com`/`gstatic.com`,
+- **CSS e JS minificados** (`assets/css/style.css` e `assets/js/script.js`
+  são os arquivos de produção — gerados a partir de `style.src.css` e
+  `script.src.js` via `./scripts/build.sh`, que roda `esbuild --minify`).
+  Isso ainda vale mesmo depois do gzip do GitHub Pages: o CSS cai de ~8 KB
+  pra ~5 KB e o JS de ~3,6 KB pra ~1,9 KB *pós-gzip* — texto comprime bem,
+  mas não ao ponto de anular a limpeza de comentários/espaços que o
+  Lighthouse cobra na auditoria de "unminified CSS/JS".
+- **Nenhum script bloqueia o carregamento inicial.** GTM e Meta Pixel
+  (`<head>`, antes de tudo) usam o snippet oficial assíncrono — eles
+  enfileiram e retornam na hora, o `.js` de verdade (`gtm.js`,
+  `fbevents.js`) carrega em paralelo sem travar o parser. `script.js` da
+  própria página usa `defer`. O único recurso que bloqueia render é o
+  `<link rel="stylesheet">` do CSS — de propósito: evita FOUC, e 5 KB
+  gzipados não custam LCP perceptível.
+- **`font-display:swap`** em todas as 4 `@font-face` — o texto nunca fica
+  invisível esperando fonte (sem FOIT), o navegador desenha com a fonte de
+  sistema e troca quando o woff2 chega.
+- **Fontes self-hosted.** Inter e Space Grotesk (variable, woff2) servidas
+  pelo próprio domínio — zero conexão com `fonts.googleapis.com`/`gstatic.com`,
   um DNS + handshake a menos no caminho crítico. Só o subset `latin` (~70 KB)
   carrega para leitores em português.
-- Imagens com `loading="lazy"`, `decoding="async"`, `width`/`height` e
-  `aspect-ratio` fixos — sem layout shift (CLS).
-- Nenhuma requisição externa além de GTM e Meta Pixel (que são propositalmente
-  as primeiras coisas da página).
+- **Imagens responsivas em AVIF/WebP com fallback PNG**, servidas via
+  `<picture>` + `srcset`/`sizes` — o navegador baixa só o formato mais leve
+  que suporta, no tamanho mais próximo do necessário pra tela dele (nada de
+  entregar um PNG de 1600px pra um card de 340px no celular). Todas as
+  imagens abaixo da dobra usam `loading="lazy"`; a única acima da dobra (o
+  logotipo do header) carrega eager com `fetchpriority="high"`.
+- `width`/`height` explícitos + `aspect-ratio` no CSS em toda imagem — o
+  espaço já é reservado antes do arquivo chegar, então carregar/trocar uma
+  imagem não empurra o layout (CLS = 0, medido com
+  `PerformanceObserver('layout-shift')` local).
+- Nenhuma requisição externa além de GTM e Meta Pixel (que são
+  propositalmente as primeiras coisas da página, e são as únicas que *devem*
+  disparar cedo — ver "Rastreamento" acima).
 - `prefers-reduced-motion` respeitado em todas as animações.
+
+---
+
+## Build
+
+O repositório versiona tanto a fonte (editável) quanto o build de produção
+(o que a página realmente carrega) — não há CI de build, então depois de
+editar CSS/JS é preciso rodar o script antes de commitar:
+
+```bash
+# depois de editar assets/css/style.src.css ou assets/js/script.src.js:
+./scripts/build.sh
+# depois de trocar um PNG em assets/img/ (logo ou algum imagem-N.png):
+python3 scripts/build-images.py
+```
+
+`scripts/build.sh` roda `npx esbuild --minify` nos dois arquivos-fonte e
+sobrescreve `assets/css/style.css`/`assets/js/script.js` (produção). Sempre
+edite os `.src.css`/`.src.js` — nunca os minificados direto, a próxima
+build apaga qualquer edição manual neles.
 
 ---
 
