@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+
+<!-- ============================================================
+     RASTREAMENTO — SEMPRE PRIMEIRO, NUNCA COM LAZY LOAD
+     Ordem intencional: GTM e Meta Pixel disparam antes de CSS,
+     fontes e qualquer JS da página.
+     ============================================================ -->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T9RTDFZ2');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+/* eventID compartilhado entre Pixel (browser) e API de Conversões (servidor).
+   É ele que evita evento duplicado quando a CAPI for ligada. */
+window.ODR_PAGEVIEW_EVENT_ID = 'pv-' + Date.now().toString(36) + '-' +
+  Math.random().toString(36).slice(2, 10);
+
+fbq('init', '2180723985697542');
+fbq('track', 'PageView', {}, { eventID: window.ODR_PAGEVIEW_EVENT_ID });
+</script>
+<!-- End Meta Pixel Code (o <noscript> fica no topo do <body>) -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#01050D">
+
+<title>Método ODR — Otimização com Dados Reais para Gestores de Tráfego</title>
+<meta name="description" content="Aprenda a cruzar os dados reais do funil (MQL, check-in, venda) com o gerenciador de anúncios e pare de otimizar por CPL. Otimize por CAC e ROAS de verdade, mesmo gerenciando vários clientes.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://metrics-odr.github.io/lp-metodo-odr/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Método ODR">
+<meta property="og:url" content="https://metrics-odr.github.io/lp-metodo-odr/">
+<meta property="og:title" content="Seu Cliente Pergunta “De Onde Vieram Essas Vendas?” E Você Responde Com Base no Pixel — Que Você Sabe Que Está Errado">
+<meta property="og:description" content="O Método ODR ensina gestores de tráfego e agências a cruzar os dados reais do funil (MQL, check-in, venda) com o gerenciador de anúncios — pra você parar de otimizar por CPL e começar a otimizar por CAC e ROAS de verdade.">
+<meta property="og:image" content="https://metrics-odr.github.io/lp-metodo-odr/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Método ODR — Otimização com Dados Reais">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Seu Cliente Pergunta “De Onde Vieram Essas Vendas?” E Você Responde Com Base no Pixel">
+<meta name="twitter:description" content="Cruze os dados reais do funil com o gerenciador de anúncios e otimize por CAC e ROAS de verdade.">
+<meta name="twitter:image" content="https://metrics-odr.github.io/lp-metodo-odr/assets/img/og-image.png">
+
+<!-- Favicon placeholder com as iniciais ODR -->
+<link rel="icon" href="assets/img/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+<!-- Fontes self-hosted: sem chamada a domínio de terceiros. -->
+<link rel="preload" href="assets/fonts/grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9RTDFZ2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- Meta Pixel (noscript) -->
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=2180723985697542&amp;ev=PageView&amp;noscript=1"></noscript>
+<!-- End Meta Pixel (noscript) -->
+
+<!-- ============================ SEÇÃO 1 — HERO ============================ -->
+<header class="hero" id="topo">
+  <svg class="hero__art" viewBox="0 0 600 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+    <g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20,330 90,300 150,318 215,236 275,252 340,168 400,186 470,96 540,110 590,44" stroke="#007BFE" opacity=".85"/>
+      <polyline points="40,392 110,364 170,376 240,306 300,320 366,250 430,266 500,192 560,206" stroke="#19D45E" opacity=".5"/>
+    </g>
+    <g fill="#0B1424" stroke="#007BFE" stroke-width="2.5">
+      <circle cx="215" cy="236" r="5"/><circle cx="340" cy="168" r="5"/>
+      <circle cx="470" cy="96" r="5"/><circle cx="590" cy="44" r="5"/>
+    </g>
+    <g fill="#0B1424" stroke="#19D45E" stroke-width="2.5" opacity=".6">
+      <circle cx="240" cy="306" r="4.5"/><circle cx="366" cy="250" r="4.5"/><circle cx="500" cy="192" r="4.5"/>
+    </g>
+  </svg>
+  <div class="wrap hero__inner">
+    <a class="brand" href="#topo" aria-label="Método ODR — início">
+      <img src="assets/img/logo-odr.png" width="622" height="309"
+           alt="Método ODR — Otimização com Dados Reais" fetchpriority="high" decoding="async">
+    </a>
+
+    <p class="eyebrow">Otimização com <b>Dados Reais</b></p>
+
+    <h1 class="hero__title">
+      Seu Cliente Pergunta <span class="q">“De Onde Vieram Essas Vendas?”</span>
+      E Você Responde Com Base no Pixel — <em>Que Você Sabe Que Está Errado</em>
+    </h1>
+
+    <p class="hero__sub">
+      O Método ODR ensina gestores de tráfego e agências a cruzar os dados reais do funil
+      (MQL, check-in, venda) com o gerenciador de anúncios — pra você parar de otimizar por CPL
+      e começar a otimizar por CAC e ROAS de verdade, mesmo gerenciando vários clientes ao mesmo tempo.
+    </p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary btn--xl" href="#oferta" data-cta="scroll" data-cta-id="cta-1">
+      Quero Ver Meus Dados Reais
+    </a>
+
+    <ul class="hero__badges">
+      <li>7 módulos gravados</li>
+      <li>Modelos prontos inclusos</li>
+      <li>Garantia de 7 dias</li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ SEÇÃO 2 — ABERTURA DE CONSCIÊNCIA ============ -->
+<section class="sec sec--alt" id="secao-2" aria-labelledby="h2-2">
+  <div class="wrap">
+    <p class="sec__kicker">O problema que ninguém te mostrou</p>
+    <h2 class="sec__title" id="h2-2">
+      O gerenciador de anúncios não sabe quem realmente comprou.
+      Ele só sabe quem o pixel <em>achou</em> que comprou.
+    </h2>
+
+    <p class="lead">
+      Todo gestor de tráfego aprende a otimizar olhando pro Gerenciador de Anúncios: CPL, CTR,
+      conversões. O problema é que o pixel atribui resultado de forma incompleta — ele duplica
+      conversão, erra atribuição entre dispositivos, não sabe diferenciar um lead curioso de um
+      MQL de verdade, e principalmente: <strong>ele não sabe quem virou venda depois do checkout.</strong>
+    </p>
+
+    <p class="lead">Repare nisso:</p>
+
+    <figure class="shot">
+      <img src="assets/img/imagem-4.png" width="1600" height="900" loading="lazy" decoding="async"
+        alt="Tabela de conjuntos de anúncio comparando dois ad sets: um com CAC de R$291 por venda real e outro com R$680.">
+      <figcaption>
+        Dois conjuntos parecidos no gerenciador. Um teve CAC de R$291 por venda real. O outro, R$680.
+        O gerenciador não te mostra essa diferença — os dados reais do negócio mostram.
+      </figcaption>
+    </figure>
+
+    <p class="lead">
+      Dois conjuntos de anúncio, público parecido, criativo parecido. No gerenciador, os dois
+      “performam bem”. Na vida real, um custa mais que o dobro pra gerar a mesma venda. Se você
+      otimiza só pelo que o gerenciador mostra, você está cortando o conjunto errado e escalando
+      o errado — e seu cliente (ou você mesmo) está pagando essa conta.
+    </p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-2">
+      Quero Parar de Otimizar no Escuro
+    </a>
+  </div>
+</section>
+
+<!-- ==================== SEÇÃO 3 — AGITAÇÃO ==================== -->
+<section class="sec" id="secao-3" aria-labelledby="h2-3">
+  <div class="wrap">
+    <p class="sec__kicker">O dia a dia que ninguém fala em público</p>
+    <h2 class="sec__title" id="h2-3">Se você atende mais de um cliente, você já viveu isso:</h2>
+
+    <ul class="painlist">
+      <li>Você fecha o mês e precisa montar relatório manual pra cada cliente — copiando número de planilha em planilha, torcendo pra não errar nenhuma célula.</li>
+      <li>O cliente pergunta “por que o CAC subiu?” e você não tem uma resposta com dado real — só um “acho que foi o criativo X”.</li>
+      <li>Você otimiza uma campanha por CPL baixo, ela “parece” estar indo bem, mas no fim do mês o faturamento do cliente não bateu.</li>
+      <li>Você sabe que tem dinheiro sendo desperdiçado em algum conjunto, mas não sabe qual — porque o gerenciador não separa MQL de curioso, nem venda de lead frio.</li>
+      <li>Você quer escalar a operação, pegar mais clientes, se pejotizar de vez — mas vive apagando incêndio de relatório em vez de vender e otimizar.</li>
+    </ul>
+
+    <p class="lead">
+      Você não precisa de mais uma ferramenta bonita de dashboard. Você precisa de
+      <strong>uma estrutura de dados que te diz a verdade</strong> — pra você tomar decisão com
+      segurança e provar resultado pro cliente sem enrolação.
+    </p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-3">
+      Quero Sair Dessa Rotina
+    </a>
+  </div>
+</section>
+
+<!-- ============ SEÇÃO 4 — APRESENTAÇÃO DO MÉTODO ============ -->
+<section class="sec sec--alt" id="metodo" aria-labelledby="h2-4">
+  <div class="wrap">
+    <p class="sec__kicker">Apresentação do método</p>
+    <h2 class="sec__title" id="h2-4">Método ODR — Otimização com Dados Reais</h2>
+
+    <p class="lead">
+      O ODR é um treinamento prático que te ensina a construir sua própria estrutura de rastreamento
+      — nomenclaturas, UTMs, planilha central, automações e dashboards — pra cruzar os dados do
+      gerenciador com os dados <strong>reais</strong> do seu negócio: MQL, check-in e venda confirmada.
+    </p>
+
+    <p class="lead">Na prática, você constrói um sistema assim:</p>
+
+    <figure class="shot">
+      <img src="assets/img/imagem-3.png" width="1600" height="900" loading="lazy" decoding="async"
+        alt="Dashboard do funil completo com gasto, checkouts, vendas, CAC e ROAS real atualizados diariamente.">
+      <figcaption>
+        Funil completo com gasto, checkouts, vendas, CAC e ROAS real — atualizado diariamente,
+        cruzando Meta Ads com os dados reais de venda do negócio.
+      </figcaption>
+    </figure>
+
+    <p class="lead">
+      Isso não é um dashboard genérico de Looker/Data Studio que só bonifica número de conversão
+      do pixel. É uma estrutura que conecta o investimento em mídia ao resultado real do negócio —
+      check-in que aconteceu, venda que caiu na conta.
+    </p>
+
+    <p class="lead">Com isso, você responde perguntas que o gerenciador nunca responde com segurança:</p>
+
+    <ul class="checklist checklist--q">
+      <li>Qual anúncio trouxe mais MQL (não só lead)?</li>
+      <li>Qual campanha gerou mais check-in?</li>
+      <li>Qual é o CAC e o ROAS real — não o estimado?</li>
+      <li>Onde está o gargalo de verdade no funil?</li>
+    </ul>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-4">
+      Quero Construir Meu Dashboard
+    </a>
+  </div>
+</section>
+
+<!-- ============ SEÇÃO 5 — O QUE VOCÊ VAI APRENDER ============ -->
+<section class="sec" id="modulos" aria-labelledby="h2-5">
+  <div class="wrap">
+    <p class="sec__kicker">Estrutura do treinamento</p>
+    <h2 class="sec__title" id="h2-5">O que você vai aprender</h2>
+
+    <p class="lead">
+      O ODR é dividido em 7 módulos, na ordem exata que você precisa implementar pra estrutura funcionar:
+    </p>
+
+    <figure class="shot">
+      <img src="assets/img/imagem-8.png" width="1600" height="900" loading="lazy" decoding="async"
+        alt="Área de membros do Método ODR exibindo os 7 módulos do treinamento.">
+    </figure>
+
+    <ol class="modules">
+      <li><span class="modules__n">1</span><div><strong>Introdução</strong> — a lógica por trás da Otimização com Dados Reais</div></li>
+      <li><span class="modules__n">2</span><div><strong>Planilhas Centrais</strong> — a base de tudo: onde os dados reais do negócio se conectam ao tráfego</div></li>
+      <li><span class="modules__n">3</span><div><strong>Padrões de Nomenclatura</strong> — como organizar campanha, conjunto e anúncio pra rastrear sem bagunça</div></li>
+      <li><span class="modules__n">4</span><div><strong>Configuração de UTMs</strong> — captura correta de origem, sem furo</div></li>
+      <li><span class="modules__n">5</span><div><strong>Automações</strong> — pra parar de fazer isso tudo manualmente</div></li>
+      <li><span class="modules__n">6</span><div><strong>Data Studio</strong> — dashboards visuais com CPL, custo por MQL, CAC e ROAS real</div></li>
+      <li><span class="modules__n">7</span><div><strong>Dashboards com IA</strong> — como plugar Inteligência Artificial pra ler seu funil e te dizer o que cortar, manter, otimizar e escalar</div></li>
+    </ol>
+
+    <p class="lead">
+      E o conteúdo não é teoria solta — são aulas gravadas mostrando a estrutura sendo construída na prática:
+    </p>
+
+    <figure class="shot">
+      <img src="assets/img/imagem-9.png" width="1600" height="900" loading="lazy" decoding="async"
+        alt="Aula real do Módulo 7 do Método ODR mostrando a construção do dashboard com IA passo a passo.">
+      <figcaption>Aula real do Módulo 7, mostrando a construção do dashboard com IA passo a passo.</figcaption>
+    </figure>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-5">
+      Quero Acesso aos 7 Módulos
+    </a>
+  </div>
+</section>
+
+<!-- ================== SEÇÃO 6 — O DIFERENCIAL ================== -->
+<section class="sec sec--alt" id="secao-6" aria-labelledby="h2-6">
+  <div class="wrap">
+    <p class="sec__kicker">Por que isso não é “só mais um dashboard”</p>
+    <h2 class="sec__title" id="h2-6">A IA não otimiza sozinha. Ela te diz onde olhar primeiro.</h2>
+
+    <p class="lead">
+      Muita gente já usa planilha ou Data Studio. O diferencial do ODR não é visualizar métrica
+      bonita — é <strong>conectar o anúncio ao resultado real e transformar isso em decisão</strong>.
+      E é aí que entra a parte que ninguém mais ensina: usar IA pra ler o funil inteiro e te devolver
+      um diagnóstico direto, sem você precisar garimpar linha por linha de planilha.
+    </p>
+
+    <p class="lead">Veja como fica na prática:</p>
+
+    <div class="shots-2">
+      <figure class="shot">
+        <img src="assets/img/imagem-5.png" width="1600" height="900" loading="lazy" decoding="async"
+          alt="Relatório gerado por IA classificando o que escalar, otimizar, cortar e observar, com o motivo de cada decisão.">
+        <figcaption>
+          A IA analisa o funil e te devolve exatamente o que escalar, o que otimizar, o que cortar
+          e o que observar — com o motivo de cada decisão.
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img src="assets/img/imagem-7.png" width="1600" height="900" loading="lazy" decoding="async"
+          alt="Diagnóstico automático de funil com nota de saúde, gargalo identificado e ação recomendada.">
+        <figcaption>
+          Diagnóstico automático: nota de saúde do funil, gargalo identificado e ação recomendada —
+          sem você precisar interpretar planilha sozinho.
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="lead">
+      A decisão final e a execução continuam sendo suas — a IA não substitui seu trabalho, ela corta
+      o tempo que você levaria pra chegar na mesma conclusão sozinho, olhando aba por aba.
+    </p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-6">
+      Quero Esse Nível de Clareza no Meu Funil
+    </a>
+  </div>
+</section>
+
+<!-- ==================== SEÇÃO 7 — AUTORIDADE ==================== -->
+<section class="sec" id="autoridade" aria-labelledby="h2-7">
+  <div class="wrap author">
+    <figure class="author__photo">
+      <img src="assets/img/imagem-1.png" width="640" height="640" loading="lazy" decoding="async"
+        alt="Foto profissional de Eduardo Mezzavilla, gestor de tráfego sênior e criador do Método ODR.">
+    </figure>
+
+    <div class="author__body">
+      <p class="sec__kicker">Autoridade</p>
+      <h2 class="sec__title" id="h2-7">Eduardo Mezzavilla — Gestor de Tráfego Sênior</h2>
+
+      <p class="lead">
+        Desde 2020 trabalhando com tráfego pago, rastreamento, automações e Business Intelligence.
+        Já geriu mais de <strong>R$20 milhões em mídia</strong>, construindo pra si e para operações
+        reais a mesma estrutura de dados que você vai aprender no ODR.
+      </p>
+
+      <p class="lead">
+        As planilhas, automações e dashboards do método não foram criados como produto — foram criados
+        primeiro pra resolver o problema na prática, em operações reais de VSL, lançamento e high ticket.
+        O ODR é a sistematização dessa estrutura, pra você implementar na sua própria operação
+        (ou na dos seus clientes) sem precisar reinventar do zero.
+      </p>
+
+      <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+      <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-7">
+        Quero Aprender Com Essa Estrutura
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SEÇÃO 8 — PRA QUEM É ==================== -->
+<section class="sec sec--alt" id="para-quem" aria-labelledby="h2-8">
+  <div class="wrap">
+    <p class="sec__kicker">Antes de você entrar</p>
+    <h2 class="sec__title" id="h2-8">Pra quem é (e pra quem não é)</h2>
+
+    <div class="fit">
+      <div class="fit__col fit__col--yes">
+        <h3 class="fit__h">O Método ODR é indicado para:</h3>
+        <ul class="checklist">
+          <li>Gestores de tráfego que atendem <strong>mais de um cliente</strong> e precisam de relatórios confiáveis pra cada operação</li>
+          <li>Agências que querem provar resultado com dado real, não estimativa de pixel</li>
+          <li>Infoprodutores que querem entender de onde vêm os melhores leads e vendas</li>
+          <li>Quem trabalha com VSL, high ticket, lançamento ou qualquer funil com etapa de qualificação (MQL, check-in)</li>
+        </ul>
+      </div>
+
+      <div class="fit__col fit__col--no">
+        <h3 class="fit__h">Não é indicado para:</h3>
+        <ul class="checklist checklist--no">
+          <li>Quem procura só “estratégia de criativo” ou “anúncio que converte sozinho”</li>
+          <li>Quem quer uma ferramenta pronta que funciona sem nenhuma implementação — o ODR exige que você configure a estrutura seguindo as aulas</li>
+          <li>Quem nunca trabalhou com campanha, lead ou métrica de tráfego (não precisa ser avançado, mas precisa ter o básico)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-8">
+      Esse Método é Pra Mim
+    </a>
+  </div>
+</section>
+
+<!-- ====================== SEÇÃO 9 — BÔNUS ====================== -->
+<section class="sec" id="bonus" aria-labelledby="h2-9">
+  <div class="wrap">
+    <p class="sec__kicker">Bônus</p>
+    <h2 class="sec__title" id="h2-9">Além dos 7 módulos, você recebe modelos prontos pra adaptar direto na sua operação:</h2>
+
+    <ul class="checklist checklist--bonus">
+      <li>Modelos de planilha para lançamento clássico, lançamento pago, VSL e high ticket</li>
+      <li>Modelos de relatório em Data Studio</li>
+      <li>Modelos de relatório com IA (via GitHub)</li>
+      <li>Planilha geradora de UTM</li>
+      <li>Planilha geradora de nomenclatura de campanhas, conjuntos e anúncios</li>
+      <li>Aula específica de como ligar uma IA pra analisar seu funil e gerar sugestões automaticamente</li>
+    </ul>
+
+    <p class="lead">Você não parte do zero — parte da mesma estrutura usada em operações reais.</p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="scroll" data-cta-id="cta-9">
+      Quero Todos os Bônus
+    </a>
+  </div>
+</section>
+
+<!-- ====================== SEÇÃO 10 — OFERTA ====================== -->
+<section class="sec sec--offer" id="oferta" aria-labelledby="h2-10">
+  <div class="wrap">
+    <p class="sec__kicker">Oferta</p>
+
+    <div class="offer">
+      <h2 class="offer__price" id="h2-10">
+        <span class="offer__from">De <s>R$697</s> por</span>
+        <span class="offer__now">R$397</span>
+      </h2>
+
+      <p class="offer__scarcity"><strong>100 vagas nesse valor.</strong> Depois disso, o preço sobe pra R$697.</p>
+
+      <ul class="offer__list">
+        <li><span aria-hidden="true">💳</span> À vista por R$397 ou em até <strong>12x de R$41,06</strong></li>
+        <li><span aria-hidden="true">🎓</span> Acesso a todos os 7 módulos + materiais complementares</li>
+        <li><span aria-hidden="true">🎁</span> Todos os bônus incluídos</li>
+        <li><span aria-hidden="true">🔒</span> Garantia incondicional de <strong>7 dias</strong></li>
+      </ul>
+
+      <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+      <a class="btn btn--primary btn--xl" href="#oferta" data-cta="checkout" data-cta-id="cta-10-principal">
+        Garantir Minha Vaga por R$397
+      </a>
+
+      <p class="offer__note">Pagamento processado pela Kiwify · Acesso imediato após a confirmação</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SEÇÃO 11 — GARANTIA ===================== -->
+<section class="sec" id="garantia" aria-labelledby="h2-11">
+  <div class="wrap guarantee">
+    <div class="guarantee__seal" aria-hidden="true"><strong>7</strong><span>dias</span></div>
+    <div>
+      <p class="sec__kicker">Garantia</p>
+      <h2 class="sec__title" id="h2-11">Risco zero pra você testar</h2>
+      <p class="lead">
+        Você tem <strong>7 dias</strong> pra acessar o conteúdo, testar a estrutura e decidir se faz
+        sentido pra sua operação. Se não fizer, é só pedir reembolso — sem burocracia.
+      </p>
+      <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+      <a class="btn btn--primary" href="#oferta" data-cta="checkout" data-cta-id="cta-11">
+        Quero Testar Sem Risco
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SEÇÃO 12 — FAQ ======================= -->
+<section class="sec sec--alt" id="faq" aria-labelledby="h2-12">
+  <div class="wrap">
+    <p class="sec__kicker">FAQ</p>
+    <h2 class="sec__title" id="h2-12">Perguntas frequentes</h2>
+
+    <div class="faq">
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p1" id="faq-b1">
+          Já tenho o pixel configurado. Ainda preciso do Método ODR?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p1" role="region" aria-labelledby="faq-b1" hidden>
+          <p>Sim. O método não substitui o pixel — ele complementa os dados do gerenciador com MQLs, check-ins e vendas reais identificadas por UTM.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p2" id="faq-b2">
+          Preciso saber programar?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p2" role="region" aria-labelledby="faq-b2" hidden>
+          <p>Não é necessário conhecimento avançado. Você recebe modelos e scripts prontos, só precisa seguir as aulas e configurar.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p3" id="faq-b3">
+          Serve para Meta Ads e Google Ads?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p3" role="region" aria-labelledby="faq-b3" hidden>
+          <p>Sim. A estrutura rastreia a origem real dos resultados através de nomenclatura, UTM e dados do próprio negócio.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p4" id="faq-b4">
+          Já uso planilha ou Data Studio. O que muda?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p4" role="region" aria-labelledby="faq-b4" hidden>
+          <p>O diferencial não é visualizar métrica — é conectar o anúncio ao resultado real e transformar isso em decisão de otimização.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p5" id="faq-b5">
+          Tenho poucos leads ou vendas. Ainda funciona?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p5" role="region" aria-labelledby="faq-b5" hidden>
+          <p>Sim, desde que existam dados rastreáveis. Quanto maior o volume, mais consistente a análise.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p6" id="faq-b6">
+          A IA otimiza a campanha sozinha?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p6" role="region" aria-labelledby="faq-b6" hidden>
+          <p>Não. Ela analisa os dados e aponta oportunidades. A decisão e a execução continuam sendo suas.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-p7" id="faq-b7">
+          Terei resultado garantido?<span class="faq__ico" aria-hidden="true"></span>
+        </button></h3>
+        <div class="faq__a" id="faq-p7" role="region" aria-labelledby="faq-b7" hidden>
+          <p>Não existe garantia de faturamento — isso depende da sua oferta, tráfego e execução. O método entrega a estrutura de dados pra você decidir com mais segurança.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary" href="#oferta" data-cta="checkout" data-cta-id="cta-12">
+      Ainda Tenho Dúvidas — Quero Garantir Minha Vaga Mesmo Assim
+    </a>
+  </div>
+</section>
+
+<!-- ===================== SEÇÃO 13 — CTA FINAL ===================== -->
+<section class="sec sec--final" id="cta-final" aria-labelledby="h2-13">
+  <div class="wrap">
+    <p class="sec__kicker">Última chamada</p>
+    <h2 class="sec__title sec__title--big" id="h2-13">As 100 vagas por R$397 não vão durar</h2>
+
+    <p class="lead lead--center">
+      Depois disso, o valor sobe pra R$697. Se você já sente na pele o tempo perdido com relatório
+      manual e a insegurança de otimizar campanha sem saber se o dado é real, essa é a hora.
+    </p>
+
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary btn--xl" href="#oferta" data-cta="checkout" data-cta-id="cta-13-final">
+      Quero Minha Vaga Agora por R$397
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="#topo" aria-label="Método ODR — voltar ao topo">
+      <img src="assets/img/logo-odr.png" width="622" height="309"
+           alt="Método ODR" loading="lazy" decoding="async">
+    </a>
+    <p class="foot__legal">Otimização com Dados Reais</p>
+    <p class="foot__legal">
+      Este produto não garante a obtenção de resultados. Qualquer referência ao desempenho de uma
+      estratégia não deve ser interpretada como garantia de resultados.
+    </p>
+    <p class="foot__legal">© <span id="ano">2026</span> Método ODR · Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<!-- Barra fixa de CTA (mobile) -->
+<div class="stickybar" id="stickybar" aria-hidden="true">
+  <div class="stickybar__inner">
+    <div class="stickybar__price">
+      <s>R$697</s> <strong>R$397</strong> <small>ou 12x R$41,06</small>
+    </div>
+    <!-- TODO: trocar pelo link do checkout Kiwify (config em assets/js/script.js → CHECKOUT_URL) -->
+    <a class="btn btn--primary btn--bar" href="#oferta" data-cta="checkout" data-cta-id="cta-sticky">
+      Garantir Minha Vaga
+    </a>
+  </div>
+</div>
+
+<script src="assets/js/script.js" defer></script>
+</body>
+</html>
