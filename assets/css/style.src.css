@@ -347,6 +347,9 @@ a,button{min-height:0}
 @media (min-width:900px){
   .shots-2{grid-template-columns:1fr 1fr;align-items:start}
   .shots-2 .shot{margin:var(--sp-4) 0 0}
+  /* zerar a margem inferior do .shot acima empurra o texto seguinte pra
+     cima do box (o .lead já nasce com margin-top:0) — devolve o respiro. */
+  .shots-2+.lead{margin-top:var(--sp-4)}
 }
 
 /* ----------------------------- LISTA DE DOR ------------------------------ */
@@ -479,6 +482,11 @@ a,button{min-height:0}
 .offer__list strong{color:var(--txt)}
 .offer .btn{margin-top:var(--sp-3);width:100%}
 @media (min-width:480px){.offer .btn{margin-top:var(--sp-4)}}
+/* folga ao rolar até o CTA da oferta (ver scrollToOffer em script.js, que
+   usa block:'end') — sem isso o botão ficaria colado no rodapé exato da
+   viewport; no mobile soma a altura da barra fixa que cobriria a base. */
+.sec--offer .btn--primary{scroll-margin-bottom:calc(96px + env(safe-area-inset-bottom))}
+@media (min-width:769px){.sec--offer .btn--primary{scroll-margin-bottom:var(--sp-4)}}
 .offer__note{margin:var(--sp-2) 0 0;font-size:.8rem;color:var(--txt-mut)}
 
 /* ------------------------------- GARANTIA -------------------------------- */
