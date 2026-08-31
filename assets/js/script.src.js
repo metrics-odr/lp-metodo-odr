@@ -201,10 +201,16 @@
      ====================================================================== */
   var offer = document.getElementById('oferta');
 
+  /* Scroll até o botão principal da oferta (não até o topo da seção): com
+     block:'end' o navegador sempre alinha a base do botão ao rodapé da
+     viewport, então o CTA nunca fica cortado — em telas baixas some parte
+     do preço acima, mas o botão continua 100% visível; em telas altas a
+     seção inteira aparece do mesmo jeito, só com folga acima. */
   function scrollToOffer() {
     if (!offer) return;
+    var target = offer.querySelector('.btn--primary') || offer;
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    offer.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'end' });
   }
 
   document.addEventListener('click', function (ev) {
