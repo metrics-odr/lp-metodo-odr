@@ -462,6 +462,8 @@ a,button{min-height:0}
   font-size:clamp(2.8rem,15vw,4.6rem);line-height:1;font-weight:700;letter-spacing:-.03em;
   background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
+/* preço à vista vira info secundária — o parcelado é o valor de destaque */
+.offer__cash{font-size:.86rem;font-weight:500;color:var(--txt-mut);margin-top:2px}
 .offer__scarcity{
   margin:var(--sp-2) auto var(--sp-3);max-width:44ch;font-size:.94rem;line-height:1.5;color:var(--txt-mut);
   padding:var(--sp-2);border-radius:12px;
