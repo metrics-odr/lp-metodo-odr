@@ -156,6 +156,9 @@ a,button{min-height:0}
   .sec .btn,.hero .btn{width:auto;margin-top:var(--sp-5)}
   .btn--xl{font-size:1.12rem;padding:24px 40px;min-height:64px}
 }
+/* CTA do hero mais próximo do texto em telas largas — parte do mesmo ajuste
+   de "sem rolagem até o botão" descrito acima. */
+@media (min-width:1024px){.hero .btn{margin-top:var(--sp-3)}}
 
 /* ------------------------------- HERO -----------------------------------
    Prioridade #1 do brief: título + subtítulo + CTA visíveis sem rolagem
@@ -173,6 +176,11 @@ a,button{min-height:0}
   border-bottom:1px solid var(--line);
 }
 @media (min-width:768px){.hero{padding:var(--sp-7) 0 var(--sp-12)}}
+/* Desktop: o objetivo mobile de título+subtítulo+CTA visíveis sem rolagem
+   vale aqui também — telas largas tinham padding e título tão grandes que o
+   CTA só aparecia depois de rolar. Menos respiro vertical + título mais
+   largo (menos linhas) resolve sem mudar a hierarquia visual. */
+@media (min-width:1024px){.hero{padding:var(--sp-5) 0 var(--sp-7)}}
 
 /* textura de grade: o "fundo de dashboard" da peça oficial */
 .hero::before{
@@ -202,6 +210,7 @@ a,button{min-height:0}
 .hero .brand{margin-bottom:var(--sp-2)}
 @media (min-width:480px){.hero .brand{margin-bottom:var(--sp-4)}}
 @media (min-width:768px){.hero .brand{margin-bottom:var(--sp-6)}}
+@media (min-width:1024px){.hero .brand{margin-bottom:var(--sp-3)}}
 
 .eyebrow{
   display:inline-block;margin:0 0 var(--sp-1);padding:8px 16px;border-radius:999px;
@@ -222,6 +231,13 @@ a,button{min-height:0}
 }
 @media (min-width:480px){
   .hero__title{font-size:clamp(2rem,6.2vw,3.65rem);line-height:1.11;letter-spacing:-.02em;max-width:19ch;margin-bottom:var(--sp-3)}
+}
+/* Em telas largas, 19ch força o título a quebrar em muitas linhas (a altura
+   total empurrava o CTA pra fora da viewport). Título mais largo = menos
+   linhas, com fonte um pouco menor pra manter a hierarquia sem exigir
+   rolagem pra ver o botão. */
+@media (min-width:1024px){
+  .hero__title{font-size:clamp(2.6rem,2.8vw,3.4rem);line-height:1.15;max-width:38ch;margin-bottom:var(--sp-2)}
 }
 .hero__title .q{color:var(--blue-lt)}
 .hero__title em{font-style:normal;color:var(--orange)}
@@ -291,6 +307,9 @@ a,button{min-height:0}
   max-width:24ch;text-wrap:balance;
 }
 @media (min-width:480px){.sec__title{font-size:clamp(1.6rem,4.2vw,2.5rem);line-height:1.2;letter-spacing:-.015em;margin-bottom:var(--sp-3)}}
+/* 24ch quebra o título em linhas de mais nas seções largas mesmo já no teto
+   de fonte do clamp acima — só desperdiça altura de tela sem ganhar leitura. */
+@media (min-width:1024px){.sec__title{max-width:34ch}}
 .sec__title em{font-style:italic;color:var(--blue-lt)}
 .sec__title--big{font-size:clamp(1.7rem,7vw,3.1rem);max-width:20ch}
 @media (min-width:480px){.sec__title--big{font-size:clamp(1.9rem,5.4vw,3.1rem)}}
@@ -304,10 +323,11 @@ a,button{min-height:0}
 .sec--final .sec__kicker{justify-content:center}
 
 /* --------------------------- PRINTS / IMAGENS -----------------------------
-   Crop focado no dado relevante: 16:9 alinhado pelo topo (onde fica o
-   cabeçalho/números do dashboard nos prints reais), sem distorcer — sempre
-   object-fit:cover. Legível sem precisar de zoom mesmo em 375px porque a
-   imagem ocupa 100% da largura útil do container.
+   Sem crop: os prints reais de dashboard têm tabela abaixo do gráfico que
+   precisa ficar visível inteira (nada de cortar linhas/colunas pra caber
+   numa caixa 16:9). A imagem usa a proporção nativa dela (dada pelos
+   atributos width/height do <img>) e mostra 100% da área — mobile e
+   desktop, sem esconder nada do print original.
    -------------------------------------------------------------------- */
 .shot{
   margin:var(--sp-4) 0;background:var(--surface);border:1px solid var(--line);
@@ -316,8 +336,7 @@ a,button{min-height:0}
 }
 .shot:hover{border-color:rgba(0,123,254,.45);transform:translateY(-3px)}
 .shot picture,.shot img{
-  width:100%;height:auto;aspect-ratio:16/9;
-  object-fit:cover;object-position:top center;
+  width:100%;height:auto;
   background:linear-gradient(135deg,#08111F,#132444);
 }
 .shot figcaption{
