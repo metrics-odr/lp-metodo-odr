@@ -343,6 +343,8 @@ a,button{min-height:0}
   padding:var(--sp-2);font-size:.9rem;line-height:1.55;color:var(--txt-mut);
   border-top:1px solid var(--line);background:rgba(0,123,254,.035);
 }
+.shot figcaption p{margin:0 0 var(--sp-1)}
+.shot figcaption p:last-child{margin-bottom:0}
 .shots-2{display:grid;gap:var(--sp-3)}
 @media (min-width:900px){
   .shots-2{grid-template-columns:1fr 1fr;align-items:start}
