@@ -491,6 +491,20 @@ a,button{min-height:0}
 @media (min-width:769px){.sec--offer .btn--primary{scroll-margin-bottom:var(--sp-4)}}
 .offer__note{margin:var(--sp-2) 0 0;font-size:.8rem;color:var(--txt-mut)}
 
+/* Desktop: comprime o respiro vertical (herdado de .sec, pensado pro
+   mobile) pra tentar caber o card de oferta inteiro — preço, lista e
+   botão — numa única tela, sem exigir rolagem extra dentro da seção. */
+@media (min-width:1024px){
+  .sec--offer{padding:var(--sp-5) 0}
+  .offer{padding:var(--sp-3) var(--sp-5)}
+  .offer__now{font-size:clamp(2.8rem,5vw,3.1rem)}
+  .offer__scarcity{margin:4px auto 12px;padding:8px var(--sp-2)}
+  .offer__list{gap:4px}
+  .offer__list li{padding-bottom:4px}
+  .offer .btn{margin-top:var(--sp-2)}
+  .offer__note{margin-top:4px}
+}
+
 /* ------------------------------- GARANTIA -------------------------------- */
 .guarantee{display:grid;gap:var(--sp-3);align-items:center;justify-items:center;text-align:center}
 @media (min-width:760px){.guarantee{grid-template-columns:172px 1fr;gap:var(--sp-6);justify-items:stretch;text-align:left}}
