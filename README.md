@@ -175,38 +175,39 @@ do `<head>`, antes do CSS e das fontes. O lazy load se aplica apenas às imagens
 Todo evento do Pixel já é enviado com um **`eventID`** — é ele que permite
 deduplicar quando a API de Conversões entrar.
 
-### API de Conversões (ainda não ligada) ⚠️
+### API de Conversões (ligada via Make) ✅
 
 O token de acesso do Meta **não está neste repositório, e não pode estar**:
 GitHub Pages serve arquivos estáticos, então qualquer token no código-fonte fica
 público — qualquer pessoa poderia enviar eventos falsos para o seu pixel.
 
-A CAPI precisa de um endpoint server-side. O `script.js` já está pronto para isso:
+A CAPI usa um endpoint server-side: um cenário no Make ("ODR LP | CAPI Meta
+Ads") recebe o evento via webhook e repassa pro Graph API do Meta
+(`https://graph.facebook.com/v21.0/<pixel_id>/events`), com o access token
+guardado só na URL desse módulo HTTP no Make — nunca neste repositório.
 
 ```js
-var CAPI_ENDPOINT = '';  // preencher com a URL do seu endpoint
+var CAPI_ENDPOINT = 'https://hook.us1.make.com/…';  // webhook do cenário no Make
 ```
 
-Preenchendo essa constante, a página passa a enviar `PageView` e
-`InitiateCheckout` para lá, com o mesmo `eventID` do Pixel (dedup automática).
-O payload já vai com `event_name`, `event_id`, `event_source_url`,
-`action_source`, `fbp`, `fbc`, `user_data` e `custom_data`.
+Com isso, a página envia `PageView` e `InitiateCheckout` pra lá, com o mesmo
+`eventID` do Pixel (dedup automática). O payload vai em campos simples —
+`event_name`, `event_id`, `event_source_url`, `fbp`, `fbc`, `value`,
+`currency`, `content_name` — e é o cenário do Make quem monta o formato
+aninhado que o Graph API espera (`data[].user_data`, `data[].custom_data`
+etc.).
 
-Opções de endpoint, da mais simples para a mais robusta:
+> **Pendência de segurança:** o access token está direto na URL do módulo
+> HTTP do Make (query param `access_token`), não numa connection/keychain.
+> Funciona, mas fica em texto puro pra quem tiver acesso ao cenário — mover
+> pra uma connection é mais seguro e fica pra um próximo passo. Se esse
+> token já circulou em outro lugar (ex.: arquivo de copy, chat), revogue e
+> gere um novo no Gerenciador de Eventos do Meta.
 
-1. **Webhook do Make** — cenário com trigger *Custom Webhook* → módulo HTTP
-   POST para `https://graph.facebook.com/v21.0/2180723985697542/events`,
-   com o token guardado na conexão do Make. Zero código.
-2. **Server-side GTM** — se você já usa GTM, é o caminho mais completo.
-3. **Cloudflare Worker / Vercel Function** — token em variável de ambiente.
-
-Em qualquer opção, o endpoint precisa liberar CORS para o domínio da página, e
-o hash SHA-256 dos dados pessoais (`em`, `ph`, `fn`) deve ser feito **no
-servidor**, nunca aqui.
-
-> **Ação recomendada:** o token que estava no arquivo de copy deve ser
-> **revogado e regerado** no Gerenciador de Eventos do Meta antes de ser usado
-> em produção — ele circulou em texto puro.
+Se quiser reforçar o match rate depois: enviar `em`/`ph`/`fn` com hash
+SHA-256 (feito **no Make, nunca no client**) exige capturar esses dados em
+algum formulário da página — hoje ela só linka pro checkout, sem form
+próprio, então esses campos ficam de fora por enquanto.
 
 ---
 

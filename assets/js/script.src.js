@@ -18,11 +18,10 @@
      ---------------------------------------------------------------------- */
   var CHECKOUT_URL = 'https://pay.kiwify.com.br/sl47FEz';
 
-  /* Endpoint da API de Conversões (server-side).
-     Deixe vazio enquanto não existir um endpoint próprio.
-     NUNCA coloque o access token do Meta aqui — este arquivo é público.
-     Veja README.md → "API de Conversões". */
-  var CAPI_ENDPOINT = '';
+  /* Endpoint da API de Conversões (server-side): webhook do Make que
+     repassa pro Graph API do Meta com o access token guardado lá, nunca
+     aqui — este arquivo é público. Veja README.md → "API de Conversões". */
+  var CAPI_ENDPOINT = 'https://hook.us1.make.com/ervliauq5wca4iamp8apq2at1oqgc4jc';
 
   var STORAGE_KEY = 'odr_params';
 
@@ -137,23 +136,23 @@
     window.dataLayer.push(data);
   }
 
-  /* Envia o mesmo evento para a CAPI, com o mesmo eventID do Pixel.
-     Só roda quando CAPI_ENDPOINT estiver configurado (proxy server-side). */
+  /* Envia o mesmo evento para a CAPI, com o mesmo eventID do Pixel (dedup
+     automática no Meta). Payload em campos simples (não aninhados) porque
+     quem monta o formato final que o Graph API espera — e faz o hash
+     SHA-256 de dado pessoal, quando houver — é o webhook no Make, nunca
+     este arquivo. Só roda quando CAPI_ENDPOINT estiver configurado. */
   function sendToCapi(eventName, eventId, custom) {
     if (!CAPI_ENDPOINT) return;
+    custom = custom || {};
     var body = {
       event_name: eventName,
       event_id: eventId,
       event_source_url: window.location.href,
-      action_source: 'website',
       fbp: getCookie('_fbp'),
       fbc: getCookie('_fbc'),
-      user_data: {
-        em: PARAMS.email || '',
-        ph: PARAMS.phone || '',
-        fn: PARAMS.name || ''
-      },
-      custom_data: custom || {}
+      value: typeof custom.value === 'number' ? custom.value : 0,
+      currency: custom.currency || 'BRL',
+      content_name: custom.content_name || ''
     };
     try {
       var blob = new Blob([JSON.stringify(body)], { type: 'application/json' });
