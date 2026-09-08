@@ -175,37 +175,42 @@ do `<head>`, antes do CSS e das fontes. O lazy load se aplica apenas às imagens
 Todo evento do Pixel já é enviado com um **`eventID`** — é ele que permite
 deduplicar quando a API de Conversões entrar.
 
-### API de Conversões (ligada via Make) ✅
+### API de Conversões (ainda não ligada) ⚠️
 
 O token de acesso do Meta **não está neste repositório, e não pode estar**:
 GitHub Pages serve arquivos estáticos, então qualquer token no código-fonte fica
 público — qualquer pessoa poderia enviar eventos falsos para o seu pixel.
 
-A CAPI usa um endpoint server-side: um cenário no Make ("ODR LP | CAPI Meta
-Ads") recebe o evento via webhook e repassa pro Graph API do Meta
-(`https://graph.facebook.com/v21.0/<pixel_id>/events`), com o access token
-guardado só na URL desse módulo HTTP no Make — nunca neste repositório.
+A CAPI precisa de um endpoint server-side. **Não usar o Make pra isso**: cada
+evento (potencialmente todo PageView) consome uma operação do plano, o que
+esgota rápido o free tier num site com tráfego real. O endpoint recomendado é
+um **Cloudflare Worker** — grátis até 100 mil requisições/dia, o que cobre
+qualquer volume razoável desta landing page.
+
+O código já está pronto em `scripts/cloudflare-worker-capi.js`, com o passo a
+passo de deploy comentado no topo do arquivo (resumo: criar conta free na
+Cloudflare, colar o código num Worker novo, configurar `META_ACCESS_TOKEN` e
+`META_PIXEL_ID` como secrets do Worker — nunca no código). Depois de publicar,
+preencha a URL do Worker aqui:
 
 ```js
-var CAPI_ENDPOINT = 'https://hook.us1.make.com/…';  // webhook do cenário no Make
+var CAPI_ENDPOINT = '';  // preencher com a URL do Worker (ex.: https://odr-lp-capi.<subdomínio>.workers.dev)
 ```
 
-Com isso, a página envia `PageView` e `InitiateCheckout` pra lá, com o mesmo
-`eventID` do Pixel (dedup automática). O payload vai em campos simples —
-`event_name`, `event_id`, `event_source_url`, `fbp`, `fbc`, `value`,
-`currency`, `content_name` — e é o cenário do Make quem monta o formato
-aninhado que o Graph API espera (`data[].user_data`, `data[].custom_data`
-etc.).
+Preenchendo essa constante, a página passa a enviar `PageView` e
+`InitiateCheckout` pra lá, com o mesmo `eventID` do Pixel (dedup automática).
+O payload vai em campos simples — `event_name`, `event_id`,
+`event_source_url`, `fbp`, `fbc`, `value`, `currency`, `content_name` — e é o
+Worker quem monta o formato aninhado que o Graph API espera
+(`data[].user_data`, `data[].custom_data`, incluindo `client_ip_address` e
+`client_user_agent` capturados direto dos headers da requisição).
 
-> **Pendência de segurança:** o access token está direto na URL do módulo
-> HTTP do Make (query param `access_token`), não numa connection/keychain.
-> Funciona, mas fica em texto puro pra quem tiver acesso ao cenário — mover
-> pra uma connection é mais seguro e fica pra um próximo passo. Se esse
-> token já circulou em outro lugar (ex.: arquivo de copy, chat), revogue e
-> gere um novo no Gerenciador de Eventos do Meta.
+> **Ação recomendada:** se o token do Meta já circulou em outro lugar em
+> texto puro (arquivo de copy, chat, cenário de automação), revogue e gere um
+> novo no Gerenciador de Eventos do Meta antes de colocar em produção.
 
 Se quiser reforçar o match rate depois: enviar `em`/`ph`/`fn` com hash
-SHA-256 (feito **no Make, nunca no client**) exige capturar esses dados em
+SHA-256 (feito **no Worker, nunca no client**) exige capturar esses dados em
 algum formulário da página — hoje ela só linka pro checkout, sem form
 próprio, então esses campos ficam de fora por enquanto.
 

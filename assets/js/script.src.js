@@ -18,10 +18,11 @@
      ---------------------------------------------------------------------- */
   var CHECKOUT_URL = 'https://pay.kiwify.com.br/sl47FEz';
 
-  /* Endpoint da API de Conversões (server-side): webhook do Make que
-     repassa pro Graph API do Meta com o access token guardado lá, nunca
-     aqui — este arquivo é público. Veja README.md → "API de Conversões". */
-  var CAPI_ENDPOINT = 'https://hook.us1.make.com/ervliauq5wca4iamp8apq2at1oqgc4jc';
+  /* Endpoint da API de Conversões (server-side). Deixe vazio até publicar o
+     Cloudflare Worker (scripts/cloudflare-worker-capi.js) — NUNCA coloque o
+     access token do Meta aqui, este arquivo é público.
+     Veja README.md → "API de Conversões". */
+  var CAPI_ENDPOINT = '';
 
   var STORAGE_KEY = 'odr_params';
 
