@@ -27,8 +27,7 @@ IMAGES = {
     'imagem-1.png': [320, 480, 640],          # foto de autoridade, 1:1
     'imagem-3.png': [480, 800, 1200, 1568],   # prints 16:9 (ou próximo)
     'imagem-4.png': [480, 800, 952],
-    'imagem-5.png': [480, 800, 914],
-    'imagem-7.png': [480, 800, 1200, 1568],
+    'imagem-5.png': [480, 800, 1200, 1440],
     'imagem-8.png': [480, 800, 1200, 1568],
     'imagem-9.png': [480, 800, 1200, 1568],
     'logo-odr.png': [180, 311, 466, 679],     # lockup do header/rodapé
