@@ -47,8 +47,7 @@ A numeração segue a do arquivo de copy original.
 | `assets/img/imagem-1.png` | 7 — Autoridade | Foto profissional do Eduardo (1:1) | 640×640 |
 | `assets/img/imagem-3.png` | 4 — O Método | Dashboard "Reset Hormonal" (funil completo) | 1568×717 |
 | `assets/img/imagem-4.png` | 2 — Consciência | Tabela de Ad Sets — CAC R$291 × R$680 no mesmo conjunto | 952×616 |
-| `assets/img/imagem-5.png` | 6 — Diferencial | Relatório de IA (Escalar / Otimizar / Cortar / Observar) | 914×730 |
-| `assets/img/imagem-7.png` | 6 — Diferencial | Diagnóstico de funil (nota de saúde + gargalo) | 1568×740 |
+| `assets/img/imagem-5.png` | 6 — Diferencial | Briefing do gestor gerado por IA (resumo, leitura do funil, estruturas e recomendações) | 1440×1269 |
 | `assets/img/imagem-8.png` | 5 — Módulos | Área de membros com os 7 módulos | 1568×744 |
 | `assets/img/imagem-9.png` | 5 — Módulos | Aula real do Módulo 7 (M07A04) | 1568×748 |
 
