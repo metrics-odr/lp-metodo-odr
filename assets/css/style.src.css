@@ -511,16 +511,8 @@ a,button{min-height:0}
 /* ------------------------------- GARANTIA -------------------------------- */
 .guarantee{display:grid;gap:var(--sp-3);align-items:center;justify-items:center;text-align:center}
 @media (min-width:760px){.guarantee{grid-template-columns:172px 1fr;gap:var(--sp-6);justify-items:stretch;text-align:left}}
-.guarantee__seal{
-  display:grid;place-content:center;text-align:center;width:128px;height:128px;border-radius:50%;
-  background:radial-gradient(circle at 32% 26%,rgba(0,123,254,.34),transparent 70%),var(--surface);
-  border:2px dashed rgba(0,123,254,.5);font-family:var(--display);
-  box-shadow:0 0 40px rgba(0,123,254,.14);
-}
-@media (min-width:480px){.guarantee__seal{width:150px;height:150px}}
-.guarantee__seal strong{display:block;font-size:2.6rem;line-height:1;color:var(--blue-lt)}
-@media (min-width:480px){.guarantee__seal strong{font-size:3rem}}
-.guarantee__seal span{font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--txt-mut)}
+.guarantee__seal{width:150px;height:150px;justify-self:center}
+@media (min-width:480px){.guarantee__seal{width:172px;height:172px}}
 
 /* ---------------------------------- FAQ -----------------------------------
    Accordion nativo: um item aberto por vez não é forçado (o usuário pode
