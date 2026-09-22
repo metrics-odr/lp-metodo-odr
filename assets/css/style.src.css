@@ -392,7 +392,7 @@ a,button{min-height:0}
 /* "não é indicado para" */
 .checklist--no li::before{background:var(--orange-soft);border-color:rgba(255,138,33,.42)}
 .checklist--no li::after{
-  content:"";left:7px;top:.48em;width:8px;height:2px;border:0;border-radius:2px;
+  content:"";left:7px;top:calc(.24em + 10px);width:8px;height:2px;border:0;border-radius:2px;
   background:var(--orange);transform:none;
 }
 
