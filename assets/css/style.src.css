@@ -457,6 +457,8 @@ a,button{min-height:0}
 @media (min-width:480px){.offer{padding:var(--sp-5) var(--sp-3)}}
 @media (min-width:720px){.offer{padding:var(--sp-6) var(--sp-6)}}
 .sec--offer .sec__kicker{justify-content:center}
+.offer__logo{display:block;width:110px;margin:0 auto var(--sp-3)}
+.offer__logo img{width:100%;height:auto;display:block}
 .offer__price{margin:0 0 var(--sp-1);display:grid;gap:2px;font-family:var(--display)}
 .offer__from{font-size:1rem;font-weight:500;color:var(--txt-mut)}
 .offer__from s{text-decoration-color:var(--orange);text-decoration-thickness:2px}
