@@ -362,6 +362,7 @@ a,button{min-height:0}
   border-radius:14px;color:var(--txt-mut);font-size:.98rem;line-height:1.55;
 }
 @media (min-width:480px){.painlist li{padding:16px 24px 16px 48px;font-size:1rem}}
+.painlist li strong{color:var(--txt)}
 .painlist li::before{
   content:"";position:absolute;left:20px;top:22px;width:9px;height:9px;border-radius:50%;
   background:var(--orange);box-shadow:0 0 0 5px var(--orange-soft);
