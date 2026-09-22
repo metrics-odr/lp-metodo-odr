@@ -123,10 +123,10 @@ a,button{min-height:0}
 /* --------------------------- TARJA DO TOPO -------------------------------- */
 .top-banner{
   background:#D92D20;color:#fff;text-align:center;
-  font-family:var(--display);font-weight:700;font-size:.85rem;letter-spacing:.02em;
-  padding:10px var(--sp-2);
+  font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.06em;
+  text-transform:uppercase;padding:8px var(--sp-2);
 }
-@media (min-width:480px){.top-banner{font-size:.95rem}}
+@media (min-width:480px){.top-banner{font-size:.78rem}}
 
 /* ------------------------------- MARCA ---------------------------------- */
 /* Logotipo oficial do cliente (assets/img/logo-odr.png) — usado como imagem,
