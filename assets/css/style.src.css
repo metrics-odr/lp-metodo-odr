@@ -120,6 +120,14 @@ a,button{min-height:0}
 .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 var(--sp-2);position:relative;z-index:1}
 @media (min-width:640px){.wrap{padding:0 var(--sp-3)}}
 
+/* --------------------------- TARJA DO TOPO -------------------------------- */
+.top-banner{
+  background:#D92D20;color:#fff;text-align:center;
+  font-family:var(--display);font-weight:700;font-size:.85rem;letter-spacing:.02em;
+  padding:10px var(--sp-2);
+}
+@media (min-width:480px){.top-banner{font-size:.95rem}}
+
 /* ------------------------------- MARCA ---------------------------------- */
 /* Logotipo oficial do cliente (assets/img/logo-odr.png) — usado como imagem,
    sem recriar nenhum elemento da marca. */
