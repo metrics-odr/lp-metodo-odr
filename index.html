@@ -4,26 +4,28 @@
 <meta charset="utf-8">
 
 <!-- ============================================================
-     RASTREAMENTO — SEMPRE PRIMEIRO, NUNCA COM LAZY LOAD
-     Ordem intencional: GTM e Meta Pixel disparam antes de CSS,
-     fontes e qualquer JS da página.
+     RASTREAMENTO — FILAS PRIMEIRO, BIBLIOTECAS DEPOIS
+     dataLayer (GTM) e fbq (Meta Pixel) são criados aqui, antes de
+     qualquer CSS/JS, e já recebem gtm.js, init e PageView — nenhum
+     evento se perde. Só o DOWNLOAD de gtm.js e fbevents.js é adiado
+     até a primeira interação (scroll, toque, clique, tecla, mouse)
+     ou, no máximo, alguns segundos após o load. Esses dois arquivos
+     eram ~100% do peso de JS da página e derrubavam o PageSpeed
+     mobile (LCP 8,8s / TBT 600ms). Ao carregar, cada biblioteca
+     processa a fila e dispara tudo o que foi enfileirado.
+     O PageView server-side (CAPI, em script.js) sai imediatamente
+     com o mesmo eventID, então o Meta recebe o evento mesmo antes
+     do Pixel carregar e deduplica quando ele carrega.
      ============================================================ -->
-
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-T9RTDFZ2');</script>
-<!-- End Google Tag Manager -->
-
-<!-- Meta Pixel Code -->
 <script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+/* Google Tag Manager — fila */
+window.dataLayer=window.dataLayer||[];
+dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+
+/* Meta Pixel — fila (mesmo stub do snippet oficial, sem injetar o script) */
+!function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
 
 /* eventID compartilhado entre Pixel (browser) e API de Conversões (servidor).
    É ele que evita evento duplicado quando a CAPI for ligada. */
@@ -32,8 +34,25 @@ window.ODR_PAGEVIEW_EVENT_ID = 'pv-' + Date.now().toString(36) + '-' +
 
 fbq('init', '2180723985697542');
 fbq('track', 'PageView', {}, { eventID: window.ODR_PAGEVIEW_EVENT_ID });
+
+/* Carregamento das bibliotecas: 1ª interação ou FALLBACK_MS após o load. */
+(function(w,d){
+  var FALLBACK_MS=5000;
+  var EVENTS=['scroll','wheel','touchstart','pointerdown','mousemove','keydown'];
+  var done=false,i;
+  function add(src){var s=d.createElement('script');s.async=true;s.src=src;d.head.appendChild(s)}
+  function load(){
+    if(done)return;done=true;
+    for(i=0;i<EVENTS.length;i++)w.removeEventListener(EVENTS[i],load,{passive:true});
+    add('https://www.googletagmanager.com/gtm.js?id=GTM-T9RTDFZ2');
+    add('https://connect.facebook.net/en_US/fbevents.js');
+  }
+  for(i=0;i<EVENTS.length;i++)w.addEventListener(EVENTS[i],load,{passive:true});
+  if(d.readyState==='complete')setTimeout(load,FALLBACK_MS);
+  else w.addEventListener('load',function(){setTimeout(load,FALLBACK_MS)});
+})(window,document);
 </script>
-<!-- End Meta Pixel Code (o <noscript> fica no topo do <body>) -->
+<!-- Fim do rastreamento (os <noscript> do GTM e do Pixel ficam no topo do <body>) -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#01050D">

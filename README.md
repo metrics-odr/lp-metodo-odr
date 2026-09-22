@@ -160,16 +160,25 @@ checkout já deve mostrar os parâmetros.
 
 | Onde | O quê |
 |---|---|
-| `<head>`, antes de tudo | GTM `GTM-T9RTDFZ2` |
-| `<head>`, logo depois | Meta Pixel `2180723985697542` + `PageView` |
+| `<head>`, antes de tudo | Fila do GTM `GTM-T9RTDFZ2` (`gtm.js`) + fila do Meta Pixel `2180723985697542` (`init` + `PageView`) |
+| 1ª interação (scroll, toque, clique, tecla, mouse) ou 5 s após o `load` | Download de `gtm.js` e `fbevents.js`, que processam a fila |
+| `script.js` (logo no load) | `PageView` server-side via CAPI, mesmo `eventID` |
 | Início do `<body>` | GTM noscript iframe |
 | Clique em CTA de checkout | `InitiateCheckout` (Pixel) + `odr_checkout_click` (dataLayer) |
 | Clique em CTA de scroll | `odr_cta_scroll` (dataLayer) |
 | Abrir pergunta do FAQ | `odr_faq_open` (dataLayer) |
 
-**Nada de rastreamento usa lazy load.** GTM e Pixel são scripts síncronos no topo
-do `<head>`, antes do CSS e das fontes. O lazy load se aplica apenas às imagens
-(`loading="lazy"`), e o `script.js` da página carrega com `defer`.
+**As filas são criadas primeiro; só as bibliotecas são adiadas.** `dataLayer` e
+`fbq` existem desde a primeira linha do `<head>` e já recebem `gtm.js`, `init` e
+`PageView` — nenhum evento se perde. O que espera é só o download de `gtm.js` e
+`fbevents.js`: eles entram na 1ª interação do usuário ou, no máximo, 5 s depois
+do `load` (constante `FALLBACK_MS` no `<head>`). Quando carregam, processam a
+fila e disparam tudo. Motivo: esses dois arquivos eram praticamente todo o JS
+da página (~264 KiB não usado, TBT 600 ms, LCP 8,8 s) e derrubavam o PageSpeed
+mobile para 59 — sem eles a página própria mede 99. Efeito colateral: o
+`PageView` do Pixel (browser) de quem sai em menos de 5 s sem tocar na tela não
+é registrado — mas o `PageView` da CAPI sai na hora, então o Meta recebe o
+evento mesmo assim.
 
 Todo evento do Pixel já é enviado com um **`eventID`** — é ele que permite
 deduplicar quando a API de Conversões entrar.
@@ -263,9 +272,9 @@ puramente decorativo e não desloca conteúdo (zero CLS). O efeito é notar
   mas não ao ponto de anular a limpeza de comentários/espaços que o
   Lighthouse cobra na auditoria de "unminified CSS/JS".
 - **Nenhum script bloqueia o carregamento inicial.** GTM e Meta Pixel
-  (`<head>`, antes de tudo) usam o snippet oficial assíncrono — eles
-  enfileiram e retornam na hora, o `.js` de verdade (`gtm.js`,
-  `fbevents.js`) carrega em paralelo sem travar o parser. `script.js` da
+  (`<head>`, antes de tudo) só criam as filas e retornam na hora; o `.js`
+  de verdade (`gtm.js`, `fbevents.js`) só baixa na 1ª interação ou 5 s
+  após o `load` — fora da janela medida pelo Lighthouse. `script.js` da
   própria página usa `defer`. O único recurso que bloqueia render é o
   `<link rel="stylesheet">` do CSS — de propósito: evita FOUC, e 5 KB
   gzipados não custam LCP perceptível.
@@ -286,9 +295,8 @@ puramente decorativo e não desloca conteúdo (zero CLS). O efeito é notar
   espaço já é reservado antes do arquivo chegar, então carregar/trocar uma
   imagem não empurra o layout (CLS = 0, medido com
   `PerformanceObserver('layout-shift')` local).
-- Nenhuma requisição externa além de GTM e Meta Pixel (que são
-  propositalmente as primeiras coisas da página, e são as únicas que *devem*
-  disparar cedo — ver "Rastreamento" acima).
+- Nenhuma requisição externa além de GTM, Meta Pixel e o webhook da CAPI
+  (ver "Rastreamento" acima).
 - `prefers-reduced-motion` respeitado em todas as animações.
 
 ---
