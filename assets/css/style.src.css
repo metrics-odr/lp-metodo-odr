@@ -340,7 +340,7 @@ a,button{min-height:0}
   background:linear-gradient(135deg,#08111F,#132444);
 }
 .shot figcaption{
-  padding:var(--sp-2);font-size:.9rem;line-height:1.55;color:var(--txt-mut);
+  padding:var(--sp-2);font-size:.8rem;line-height:1.55;color:var(--txt-mut);
   border-top:1px solid var(--line);background:rgba(0,123,254,.035);
 }
 .shot figcaption p{margin:0 0 var(--sp-1)}
