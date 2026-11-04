@@ -5,7 +5,7 @@
 
 <!-- ============================================================
      RASTREAMENTO — SEMPRE PRIMEIRO, NUNCA COM LAZY LOAD
-     Ordem intencional: GTM e Meta Pixel disparam antes de CSS,
+     Ordem intencional: GTM dispara antes de CSS,
      fontes e qualquer JS da página.
      ============================================================ -->
 
@@ -17,23 +17,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-T9RTDFZ2');</script>
 <!-- End Google Tag Manager -->
 
-<!-- Meta Pixel Code -->
 <script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
-
-/* eventID compartilhado entre Pixel (browser) e API de Conversões (servidor).
-   É ele que evita evento duplicado quando a CAPI for ligada. */
+/* eventID usado no webhook server-side (assets/js/script.js). */
 window.ODR_PAGEVIEW_EVENT_ID = 'pv-' + Date.now().toString(36) + '-' +
   Math.random().toString(36).slice(2, 10);
-
-fbq('init', '2180723985697542');
-fbq('track', 'PageView', {}, { eventID: window.ODR_PAGEVIEW_EVENT_ID });
 </script>
-<!-- End Meta Pixel Code (o <noscript> fica no topo do <body>) -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#01050D">
@@ -73,11 +61,6 @@ fbq('track', 'PageView', {}, { eventID: window.ODR_PAGEVIEW_EVENT_ID });
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9RTDFZ2"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-
-<!-- Meta Pixel (noscript) -->
-<noscript><img height="1" width="1" style="display:none" alt=""
-src="https://www.facebook.com/tr?id=2180723985697542&amp;ev=PageView&amp;noscript=1"></noscript>
-<!-- End Meta Pixel (noscript) -->
 
 <div class="top-banner">Exclusivo para Gestores de Tráfego</div>
 
